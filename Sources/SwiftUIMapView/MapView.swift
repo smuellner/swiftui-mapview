@@ -280,15 +280,15 @@ public struct MapView: UIViewRepresentable {
         public func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
             if overlay is MKPolygon {
                 let polygonView = MKPolygonRenderer(overlay: overlay)
-                polygonView.lineWidth = CGFloat(2)
-                polygonView.fillColor = (UIColor.green).withAlphaComponent(0.25)
-                polygonView.strokeColor = UIColor.init(white: 0, alpha: 0.5)
+                polygonView.lineWidth = CGFloat(1)
+                polygonView.fillColor = UIColor.green.withAlphaComponent(0.15)
+                polygonView.strokeColor = UIColor.green.withAlphaComponent(0.35)
                 return polygonView
             } else if overlay is MKMultiPolygon {
                 let multiPolygonView = MKMultiPolygonRenderer(overlay: overlay)
-                multiPolygonView.lineWidth = CGFloat(2)
-                multiPolygonView.strokeColor = UIColor.red
-                multiPolygonView.lineCap = .round
+                multiPolygonView.lineWidth = CGFloat(1)
+                multiPolygonView.fillColor = UIColor.blue.withAlphaComponent(0.15)
+                multiPolygonView.strokeColor = UIColor.blue.withAlphaComponent(0.35)
                 return multiPolygonView
             } else if overlay is MKPolyline {
                 let polylineView = MKPolylineRenderer(overlay: overlay)
