@@ -276,7 +276,29 @@ public struct MapView: UIViewRepresentable {
                 self.context.region = mapView.region
             }
         }
-        
+
+        public func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+            if overlay is MKPolygon {
+                let polygonView = MKPolygonRenderer(overlay: overlay)
+                polygonView.lineWidth = CGFloat(2)
+                polygonView.fillColor = (UIColor.green).withAlphaComponent(0.25)
+                polygonView.strokeColor = UIColor.init(white: 0, alpha: 0.5)
+                return polygonView
+            } else if overlay is MKMultiPolygon {
+                let multiPolygonView = MKMultiPolygonRenderer(overlay: overlay)
+                multiPolygonView.lineWidth = CGFloat(2)
+                multiPolygonView.strokeColor = UIColor.red
+                multiPolygonView.lineCap = .round
+                return multiPolygonView
+            } else if overlay is MKPolyline {
+                let polylineView = MKPolylineRenderer(overlay: overlay)
+                polylineView.lineWidth = CGFloat(2)
+                polylineView.strokeColor = UIColor.red
+                polylineView.lineCap = .round
+                return polylineView
+            }
+            return MKOverlayRenderer.init()
+        }
     }
     
 }
