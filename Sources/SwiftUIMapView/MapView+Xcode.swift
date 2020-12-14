@@ -8,7 +8,7 @@
 #if canImport(DeveloperToolsSupport)
 import DeveloperToolsSupport
 
-@available(iOS 14.0, *)
+@available(iOS 15.0, *)
 struct LibraryViewContent: LibraryContentProvider {
     @LibraryContentBuilder
     var views: [LibraryItem] {

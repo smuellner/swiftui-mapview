@@ -20,7 +20,7 @@ import UIKit
  - Copyright: 2020 Sören Gade
  */
 @available(iOS, introduced: 13.0)
-@available(iOS, deprecated: 14.0, message: "Please consider using the official Map view.")
+@available(iOS, deprecated: 15.0, message: "Please consider using the official Map view.")
 public struct MapView: UIViewRepresentable {
     
     // MARK: Properties
@@ -66,6 +66,11 @@ public struct MapView: UIViewRepresentable {
      - SeeAlso: selectedAnnotation
      */
     let annotations: [MapViewAnnotation]
+
+    /**
+     Overlays that are displayed on the map.
+     */
+    let overlays: [MKOverlay]
     
     /**
      The currently selected annotations.
@@ -94,7 +99,8 @@ public struct MapView: UIViewRepresentable {
                 showsUserLocation: Bool = true,
                 userTrackingMode: MKUserTrackingMode = .none,
                 annotations: [MapViewAnnotation] = [],
-                selectedAnnotations: Binding<[MapViewAnnotation]> = .constant([])) {
+                selectedAnnotations: Binding<[MapViewAnnotation]> = .constant([]),
+                overlays: [MKOverlay] = []) {
         self.mapType = mapType
         self._region = region
         self.isZoomEnabled = isZoomEnabled
@@ -103,6 +109,7 @@ public struct MapView: UIViewRepresentable {
         self.userTrackingMode = userTrackingMode
         self.annotations = annotations
         self._selectedAnnotations = selectedAnnotations
+        self.overlays = overlays
     }
 
     // MARK: - UIViewRepresentable
@@ -153,6 +160,7 @@ public struct MapView: UIViewRepresentable {
         // annotation configuration
         self.updateAnnotations(in: mapView)
         self.updateSelectedAnnotation(in: mapView)
+        self.updateOverlays(in: mapView)
     }
     
     /**
@@ -202,6 +210,27 @@ public struct MapView: UIViewRepresentable {
         for annotation in newSelections {
             mapView.selectAnnotation(annotation, animated: true)
         }
+    }
+
+    /**
+     Updates the overlay property of the `mapView`.
+     Calculates the difference between the current and new states and only executes changes on those diff sets.
+
+     - Parameter mapView: The `MKMapView` to configure.
+     */
+    private func updateOverlays(in mapView: MKMapView) {
+        let currentOverlays = mapView.overlays
+        // remove old annotations
+        let obsoleteOverlays = currentOverlays.filter { overlay in
+            !self.overlays.contains { $0.isEqual(overlay) }
+        }
+        mapView.removeOverlays(obsoleteOverlays)
+
+        // add new annotations
+        let newOverlays = self.overlays.filter { overlay in
+            !currentOverlays.contains { $0.isEqual(overlay) }
+        }
+        mapView.addAnnotations(newOverlays)
     }
     
     // MARK: - Interaction and delegate implementation
