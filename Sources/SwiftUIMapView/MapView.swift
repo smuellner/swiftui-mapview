@@ -230,7 +230,7 @@ public struct MapView: UIViewRepresentable {
         let newOverlays = self.overlays.filter { overlay in
             !currentOverlays.contains { $0.isEqual(overlay) }
         }
-        mapView.addAnnotations(newOverlays)
+        mapView.addOverlays(newOverlays)
     }
     
     // MARK: - Interaction and delegate implementation
