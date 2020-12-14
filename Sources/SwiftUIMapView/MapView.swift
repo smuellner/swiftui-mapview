@@ -71,7 +71,12 @@ public struct MapView: UIViewRepresentable {
      Overlays that are displayed on the map.
      */
     let overlays: [MKOverlay]
-    
+
+    /**
+     Focus on all overlays that are displayed on the map.
+     */
+    let focusOverlays: Bool
+
     /**
      The currently selected annotations.
      
@@ -100,7 +105,8 @@ public struct MapView: UIViewRepresentable {
                 userTrackingMode: MKUserTrackingMode = .none,
                 annotations: [MapViewAnnotation] = [],
                 selectedAnnotations: Binding<[MapViewAnnotation]> = .constant([]),
-                overlays: [MKOverlay] = []) {
+                overlays: [MKOverlay] = [],
+                focusOverlays: Bool = false) {
         self.mapType = mapType
         self._region = region
         self.isZoomEnabled = isZoomEnabled
@@ -110,6 +116,7 @@ public struct MapView: UIViewRepresentable {
         self.annotations = annotations
         self._selectedAnnotations = selectedAnnotations
         self.overlays = overlays
+        self.focusOverlays = focusOverlays
     }
 
     // MARK: - UIViewRepresentable
@@ -162,7 +169,7 @@ public struct MapView: UIViewRepresentable {
         self.updateSelectedAnnotation(in: mapView)
         self.updateOverlays(in: mapView)
     }
-    
+
     /**
      Updates the annotation property of the `mapView`.
      Calculates the difference between the current and new states and only executes changes on those diff sets.
@@ -231,6 +238,16 @@ public struct MapView: UIViewRepresentable {
             !currentOverlays.contains { $0.isEqual(overlay) }
         }
         mapView.addOverlays(newOverlays)
+
+        if self.focusOverlays {
+            guard let initial = mapView.overlays.first?.boundingMapRect else { return }
+
+            let mapRect = mapView.overlays
+                .dropFirst()
+                .reduce(initial) { $0.union($1.boundingMapRect) }
+
+            mapView.setVisibleMapRect(mapRect, edgePadding: UIEdgeInsets(top: 50, left: 50, bottom: 50, right: 50), animated: true)
+        }
     }
     
     // MARK: - Interaction and delegate implementation
