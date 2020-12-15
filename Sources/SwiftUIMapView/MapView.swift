@@ -265,7 +265,7 @@ public struct MapView: UIViewRepresentable {
                 .dropFirst()
                 .reduce(initial) { $0.union($1.boundingMapRect) }
 
-            mapView.setVisibleMapRect(mapRect, edgePadding: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10), animated: true)
+            mapView.setVisibleMapRect(mapRect, edgePadding: UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20), animated: true)
         }
     }
     
