@@ -239,18 +239,18 @@ public struct MapView: UIViewRepresentable {
         mapView.addOverlays(newOverlays)
 
         if self.focusOverlays {
-            let biggestOverlay = newOverlays.max { (o1, o2) -> Bool in
+            let biggestOverlay = mapView.overlays.max { (o1, o2) -> Bool in
                 o1.regionArea > o2.regionArea
             }
             guard let biggestOverlayRegionArea = biggestOverlay?.regionArea else { return }
             let thresholdRegionArea = biggestOverlayRegionArea * 0.7
 
-            let filteredOverlays = newOverlays.filter { (o) -> Bool in
+            let filteredOverlays = mapView.overlays.filter { (o) -> Bool in
                 o.regionArea >= thresholdRegionArea
             }
             guard let initial = filteredOverlays.first?.boundingMapRect else { return }
 
-            let mapRect = newOverlays
+            let mapRect = filteredOverlays
                 .dropFirst()
                 .reduce(initial) { $0.union($1.boundingMapRect) }
 
