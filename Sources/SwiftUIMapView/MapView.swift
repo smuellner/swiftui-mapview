@@ -68,6 +68,14 @@ public struct MapView: UIViewRepresentable {
     let annotations: [MapViewAnnotation]
 
     /**
+     The currently selected annotations.
+
+     When the user selects annotations on the map the value of this binding changes.
+     Likewise, setting the value of this binding to a value selects the given annotations.
+     */
+    @Binding var selectedAnnotations: [MapViewAnnotation]
+
+    /**
      Overlays that are displayed on the map.
      */
     let overlays: [MKOverlay]
@@ -78,12 +86,9 @@ public struct MapView: UIViewRepresentable {
     let focusOverlays: Bool
 
     /**
-     The currently selected annotations.
-     
-     When the user selects annotations on the map the value of this binding changes.
-     Likewise, setting the value of this binding to a value selects the given annotations.
+     Center on the map.
      */
-    @Binding var selectedAnnotations: [MapViewAnnotation]
+    let center: CLLocationCoordinate2D?
 
     // MARK: Initializer
     /**
@@ -106,7 +111,8 @@ public struct MapView: UIViewRepresentable {
                 annotations: [MapViewAnnotation] = [],
                 selectedAnnotations: Binding<[MapViewAnnotation]> = .constant([]),
                 overlays: [MKOverlay] = [],
-                focusOverlays: Bool = false) {
+                focusOverlays: Bool = false,
+                center: CLLocationCoordinate2D? = nil) {
         self.mapType = mapType
         self._region = region
         self.isZoomEnabled = isZoomEnabled
@@ -117,6 +123,7 @@ public struct MapView: UIViewRepresentable {
         self._selectedAnnotations = selectedAnnotations
         self.overlays = overlays
         self.focusOverlays = focusOverlays
+        self.center = center
     }
 
     // MARK: - UIViewRepresentable
@@ -168,6 +175,10 @@ public struct MapView: UIViewRepresentable {
         self.updateAnnotations(in: mapView)
         self.updateSelectedAnnotation(in: mapView)
         self.updateOverlays(in: mapView)
+
+        if let center = self.center {
+            mapView.setCenter(center, animated: true)
+        }
     }
 
     /**
