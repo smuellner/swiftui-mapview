@@ -21,6 +21,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		15A53D482588F79500D77BBE /* CLLocationCoordinate2D+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A53D472588F79500D77BBE /* CLLocationCoordinate2D+Extension.swift */; };
+		15A53D522588FC6A00D77BBE /* MKOverlay+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A53D512588FC6A00D77BBE /* MKOverlay+Extension.swift */; };
 		451525AB2404568600027181 /* CoreLocation+Equatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451525AA2404568600027181 /* CoreLocation+Equatable.swift */; };
 		451DD1332400125400CBDA1A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451DD1322400125400CBDA1A /* AppDelegate.swift */; };
 		451DD1352400125400CBDA1A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451DD1342400125400CBDA1A /* SceneDelegate.swift */; };
@@ -83,6 +85,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		15A53D472588F79500D77BBE /* CLLocationCoordinate2D+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLLocationCoordinate2D+Extension.swift"; sourceTree = "<group>"; };
+		15A53D512588FC6A00D77BBE /* MKOverlay+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MKOverlay+Extension.swift"; sourceTree = "<group>"; };
 		451525AA2404568600027181 /* CoreLocation+Equatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreLocation+Equatable.swift"; sourceTree = "<group>"; };
 		451DD1302400125400CBDA1A /* MapViewExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MapViewExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		451DD1322400125400CBDA1A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -136,6 +140,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		15A53D462588F77B00D77BBE /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				451DD14B24008FC400CBDA1A /* MKMapView+MapViewAnnotation.swift */,
+				451525AA2404568600027181 /* CoreLocation+Equatable.swift */,
+				15A53D472588F79500D77BBE /* CLLocationCoordinate2D+Extension.swift */,
+				15A53D512588FC6A00D77BBE /* MKOverlay+Extension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		451DD1312400125400CBDA1A /* MapViewExample */ = {
 			isa = PBXGroup;
 			children = (
@@ -229,11 +244,10 @@
 		OBJ_8 /* SwiftUIMapView */ = {
 			isa = PBXGroup;
 			children = (
+				15A53D462588F77B00D77BBE /* Extensions */,
 				451DD1492400853E00CBDA1A /* Views */,
 				OBJ_12 /* MapView.swift */,
 				OBJ_9 /* MapAnnotation.swift */,
-				451DD14B24008FC400CBDA1A /* MKMapView+MapViewAnnotation.swift */,
-				451525AA2404568600027181 /* CoreLocation+Equatable.swift */,
 				4592898C24A63F9E0001F8CA /* MapView+Xcode.swift */,
 			);
 			name = SwiftUIMapView;
@@ -380,10 +394,12 @@
 				4592898D24A63F9E0001F8CA /* MapView+Xcode.swift in Sources */,
 				451DD14C24008FC400CBDA1A /* MKMapView+MapViewAnnotation.swift in Sources */,
 				OBJ_28 /* MapAnnotation.swift in Sources */,
+				15A53D522588FC6A00D77BBE /* MKOverlay+Extension.swift in Sources */,
 				OBJ_29 /* MapAnnotationClusterView.swift in Sources */,
 				OBJ_30 /* MapAnnotationView.swift in Sources */,
 				OBJ_31 /* MapView.swift in Sources */,
 				451525AB2404568600027181 /* CoreLocation+Equatable.swift in Sources */,
+				15A53D482588F79500D77BBE /* CLLocationCoordinate2D+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

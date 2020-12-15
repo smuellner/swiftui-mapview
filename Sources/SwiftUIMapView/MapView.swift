@@ -207,7 +207,6 @@ public struct MapView: UIViewRepresentable {
         for annotation in oldSelections {
             mapView.deselectAnnotation(annotation, animated: false)
         }
-        
         // select all new annotations
         let newSelections = self.selectedAnnotations.filter { selection in
             !mapView.selectedMapViewAnnotations.contains {
@@ -227,26 +226,35 @@ public struct MapView: UIViewRepresentable {
      */
     private func updateOverlays(in mapView: MKMapView) {
         let currentOverlays = mapView.overlays
-        // remove old annotations
+        // remove old overlays
         let obsoleteOverlays = currentOverlays.filter { overlay in
             !self.overlays.contains { $0.isEqual(overlay) }
         }
         mapView.removeOverlays(obsoleteOverlays)
 
-        // add new annotations
+        // add new overlays
         let newOverlays = self.overlays.filter { overlay in
             !currentOverlays.contains { $0.isEqual(overlay) }
         }
         mapView.addOverlays(newOverlays)
 
         if self.focusOverlays {
-            guard let initial = mapView.overlays.first?.boundingMapRect else { return }
+            let biggestOverlay = newOverlays.max { (o1, o2) -> Bool in
+                o1.regionArea > o2.regionArea
+            }
+            guard let biggestOverlayRegionArea = biggestOverlay?.regionArea else { return }
+            let thresholdRegionArea = biggestOverlayRegionArea * 0.7
 
-            let mapRect = mapView.overlays
+            let filteredOverlays = newOverlays.filter { (o) -> Bool in
+                o.regionArea >= thresholdRegionArea
+            }
+            guard let initial = filteredOverlays.first?.boundingMapRect else { return }
+
+            let mapRect = newOverlays
                 .dropFirst()
                 .reduce(initial) { $0.union($1.boundingMapRect) }
 
-            mapView.setVisibleMapRect(mapRect, edgePadding: UIEdgeInsets(top: 50, left: 50, bottom: 50, right: 50), animated: true)
+            mapView.setVisibleMapRect(mapRect, edgePadding: UIEdgeInsets(top: 80, left: 80, bottom: 80, right: 80), animated: true)
         }
     }
     
@@ -304,8 +312,8 @@ public struct MapView: UIViewRepresentable {
             } else if overlay is MKMultiPolygon {
                 let multiPolygonView = MKMultiPolygonRenderer(overlay: overlay)
                 multiPolygonView.lineWidth = CGFloat(1)
-                multiPolygonView.fillColor = UIColor.blue.withAlphaComponent(0.15)
-                multiPolygonView.strokeColor = UIColor.blue.withAlphaComponent(0.35)
+                multiPolygonView.fillColor = UIColor.green.withAlphaComponent(0.15)
+                multiPolygonView.strokeColor = UIColor.green.withAlphaComponent(0.35)
                 return multiPolygonView
             } else if overlay is MKPolyline {
                 let polylineView = MKPolylineRenderer(overlay: overlay)
